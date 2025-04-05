@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health & Task Management App</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container-fluid main-container">
+        <!-- Daily Timetable Section -->
+        <section class="timetable-section mt-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2>Daily Timetable</h2>
+                <button class="btn btn-outline-secondary" id="calendarBtn">
+                    <i class="bi bi-calendar"></i>
+                </button>
+            </div>
+            <div class="timetable-content mt-2">
+                <div class="card">
+                    <div class="card-body">
+                        <div id="timetableList" class="list-group">
+                            <!-- Timetable items will be populated dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Task Management Section -->
+        <section class="task-section mt-4">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2>Your Tasks</h2>
+                <button class="btn btn-primary" id="addTaskBtn">
+                    <i class="bi bi-plus"></i> Add Task
+                </button>
+            </div>
+            <div class="task-content mt-2">
+                <div class="card">
+                    <div class="card-body">
+                        <div id="taskList" class="list-group">
+                            <!-- Task items will be populated dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Routine Section -->
+        <section class="routine-section mt-4">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2>Routine</h2>
+                <button class="btn btn-outline-primary" id="updateRoutineBtn">Update Routine</button>
+            </div>
+            <div class="routine-content mt-2">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <div class="card h-100">
+                            <div class="card-header bg-light">
+                                <h5 class="mb-0">Morning</h5>
+                            </div>
+                            <div class="card-body">
+                                <div id="morningRoutine" class="list-group">
+                                    <!-- Morning routine will be populated dynamically -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="card h-100">
+                            <div class="card-header bg-light">
+                                <h5 class="mb-0">Afternoon</h5>
+                            </div>
+                            <div class="card-body">
+                                <div id="afternoonRoutine" class="list-group">
+                                    <!-- Afternoon routine will be populated dynamically -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="card h-100">
+                            <div class="card-header bg-light">
+                                <h5 class="mb-0">Evening</h5>
+                            </div>
+                            <div class="card-body">
+                                <div id="eveningRoutine" class="list-group">
+                                    <!-- Evening routine will be populated dynamically -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Memory Aid Section -->
+        <section class="memory-section mt-4">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2>Memory Aid</h2>
+                <button class="btn btn-primary" id="addMemoryBtn">
+                    <i class="bi bi-plus"></i> Add Memory Aid
+                </button>
+            </div>
+            <div class="memory-content mt-2">
+                <div class="card">
+                    <div class="card-body">
+                        <div id="memoryList" class="list-group">
+                            <!-- Memory aid items will be populated dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Consult Doctor Section -->
+        <section class="doctor-section mt-4 mb-5 pb-5">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2>Consult Doctor</h2>
+                <button class="btn btn-outline-primary" id="viewDoctorsBtn">View Doctors</button>
+            </div>
+            <div class="doctor-content mt-2">
+                <div class="card">
+                    <div class="card-body">
+                        <p>Connect with healthcare professionals for consultation and appointments.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Fixed Bottom Navigation -->
+        <nav class="navbar fixed-bottom navbar-expand navbar-dark bg-primary">
+            <div class="container-fluid justify-content-around">
+                <a class="navbar-brand active" href="index.html">
+                    <i class="bi bi-house-door"></i>
+                    <span class="d-none d-md-inline">Home</span>
+                </a>
+                <a class="navbar-brand" href="dashboard.html">
+                    <i class="bi bi-graph-up"></i>
+                    <span class="d-none d-md-inline">Dashboard</span>
+                </a>
+                <a class="navbar-brand" href="emergency.html">
+                    <i class="bi bi-exclamation-triangle"></i>
+                    <span class="d-none d-md-inline">Emergency</span>
+                </a>
+                <a class="navbar-brand" href="chat.html">
+                    <i class="bi bi-chat-dots"></i>
+                    <span class="d-none d-md-inline">Chat</span>
+                </a>
+                <a class="navbar-brand" href="location.html">
+                    <i class="bi bi-geo-alt"></i>
+                    <span class="d-none d-md-inline">Location</span>
+                </a>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Modal for Adding Task -->
+    <div class="modal fade" id="addTaskModal" tabindex="-1" aria-labelledby="addTaskModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addTaskModalLabel">Add New Task</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="taskForm">
+                        <div class="mb-3">
+                            <label for="taskName" class="form-label">Task Name</label>
+                            <input type="text" class="form-control" id="taskName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="taskDescription" class="form-label">Description</label>
+                            <textarea class="form-control" id="taskDescription" rows="3"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="taskDueDate" class="form-label">Due Date</label>
+                            <input type="date" class="form-control" id="taskDueDate" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="taskPriority" class="form-label">Priority</label>
+                            <select class="form-select" id="taskPriority">
+                                <option value="Low">Low</option>
+                                <option value="Medium" selected>Medium</option>
+                                <option value="High">High</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="saveTaskBtn">Save Task</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Adding Memory Aid -->
+    <div class="modal fade" id="addMemoryModal" tabindex="-1" aria-labelledby="addMemoryModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addMemoryModalLabel">Add Memory Aid</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="memoryForm">
+                        <div class="mb-3">
+                            <label for="memoryTitle" class="form-label">Title</label>
+                            <input type="text" class="form-control" id="memoryTitle" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="memoryDescription" class="form-label">Description</label>
+                            <textarea class="form-control" id="memoryDescription" rows="3"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="memoryReminderTime" class="form-label">Reminder Time</label>
+                            <input type="datetime-local" class="form-control" id="memoryReminderTime">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="saveMemoryBtn">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Updating Routine -->
+    <div class="modal fade" id="updateRoutineModal" tabindex="-1" aria-labelledby="updateRoutineModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateRoutineModalLabel">Update Routine</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="routineForm">
+                        <div class="mb-3">
+                            <h6>Morning Routine</h6>
+                            <div id="morningRoutineInputs">
+                                <div class="row mb-2">
+                                    <div class="col-6">
+                                        <input type="text" class="form-control" placeholder="Activity">
+                                    </div>
+                                    <div class="col-4">
+                                        <input type="time" class="form-control">
+                                    </div>
+                                    <div class="col-2">
+                                        <button type="button" class="btn btn-sm btn-outline-danger remove-routine-btn">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-sm btn-outline-primary add-morning-btn mt-2">
+                                <i class="bi bi-plus"></i> Add Morning Activity
+                            </button>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <h6>Afternoon Routine</h6>
+                            <div id="afternoonRoutineInputs">
+                                <div class="row mb-2">
+                                    <div class="col-6">
+                                        <input type="text" class="form-control" placeholder="Activity">
+                                    </div>
+                                    <div class="col-4">
+                                        <input type="time" class="form-control">
+                                    </div>
+                                    <div class="col-2">
+                                        <button type="button" class="btn btn-sm btn-outline-danger remove-routine-btn">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-sm btn-outline-primary add-afternoon-btn mt-2">
+                                <i class="bi bi-plus"></i> Add Afternoon Activity
+                            </button>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <h6>Evening Routine</h6>
+                            <div id="eveningRoutineInputs">
+                                <div class="row mb-2">
+                                    <div class="col-6">
+                                        <input type="text" class="form-control" placeholder="Activity">
+                                    </div>
+                                    <div class="col-4">
+                                        <input type="time" class="form-control">
+                                    </div>
+                                    <div class="col-2">
+                                        <button type="button" class="btn btn-sm btn-outline-danger remove-routine-btn">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-sm btn-outline-primary add-evening-btn mt-2">
+                                <i class="bi bi-plus"></i> Add Evening Activity
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="saveRoutineBtn">Save Routine</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="js/app.js"></script>
+</body>
+</html> 

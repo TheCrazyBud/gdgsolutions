@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Location - Health & Task App</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .map-container {
+            height: 400px;
+            width: 100%;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        
+        .map-placeholder {
+            background-color: #e9ecef;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        
+        .location-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+        
+        .location-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .location-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .hospital-icon {
+            background-color: #dc3545;
+        }
+        
+        .pharmacy-icon {
+            background-color: #198754;
+        }
+        
+        .clinic-icon {
+            background-color: #0d6efd;
+        }
+        
+        .location-info {
+            flex-grow: 1;
+        }
+        
+        .location-name {
+            font-weight: bold;
+            margin-bottom: 0;
+        }
+        
+        .location-address {
+            font-size: 0.9rem;
+            color: #6c757d;
+            margin-bottom: 5px;
+        }
+        
+        .location-distance {
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+        
+        .location-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .category-filters {
+            margin-bottom: 20px;
+        }
+        
+        .category-btn {
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .category-btn.active {
+            background-color: #0d6efd;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid main-container">
+        <div class="row my-3">
+            <div class="col">
+                <h1 class="mb-4">Location</h1>
+                
+                <!-- Map Section -->
+                <div class="card mb-4">
+                    <div class="card-body p-0">
+                        <div class="map-container" id="mapContainer">
+                            <div class="map-placeholder">
+                                <i class="bi bi-map" style="font-size: 3rem; margin-bottom: 15px;"></i>
+                                <p class="mb-2">Map view would be displayed here.</p>
+                                <p class="mb-0 small text-muted">In a production app, this would integrate with Google Maps or another mapping service.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="px-3 pb-3">
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="Search for healthcare facilities..." id="locationSearch">
+                                <button class="btn btn-primary" type="button" id="searchBtn">
+                                    <i class="bi bi-search"></i> Search
+                                </button>
+                            </div>
+                            
+                            <div class="d-flex align-items-center mb-2">
+                                <p class="mb-0 me-2">Your Location:</p>
+                                <span class="text-primary" id="currentLocation">123 Main St, Anytown, USA</span>
+                                <button class="btn btn-sm btn-outline-primary ms-3" id="updateLocationBtn">
+                                    <i class="bi bi-geo-alt"></i> Update
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Category Filters -->
+                <div class="category-filters">
+                    <button class="btn btn-outline-secondary category-btn active" data-category="all">All</button>
+                    <button class="btn btn-outline-danger category-btn" data-category="hospital">Hospitals</button>
+                    <button class="btn btn-outline-success category-btn" data-category="pharmacy">Pharmacies</button>
+                    <button class="btn btn-outline-primary category-btn" data-category="clinic">Clinics</button>
+                </div>
+                
+                <!-- Nearby Healthcare Facilities -->
+                <h4 class="mb-3">Nearby Healthcare Facilities</h4>
+                
+                <div id="locationList">
+                    <!-- These items would be dynamically generated in a real app -->
+                    <div class="location-item" data-category="hospital">
+                        <div class="location-icon hospital-icon">
+                            <i class="bi bi-hospital"></i>
+                        </div>
+                        <div class="location-info">
+                            <p class="location-name">City General Hospital</p>
+                            <p class="location-address">456 Healthcare Blvd, Anytown, USA</p>
+                            <p class="location-distance">1.2 miles away</p>
+                        </div>
+                        <div class="location-actions">
+                            <button class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-telephone"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="location-item" data-category="pharmacy">
+                        <div class="location-icon pharmacy-icon">
+                            <i class="bi bi-capsule"></i>
+                        </div>
+                        <div class="location-info">
+                            <p class="location-name">QuickCare Pharmacy</p>
+                            <p class="location-address">789 Wellness St, Anytown, USA</p>
+                            <p class="location-distance">0.5 miles away</p>
+                        </div>
+                        <div class="location-actions">
+                            <button class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-telephone"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="location-item" data-category="clinic">
+                        <div class="location-icon clinic-icon">
+                            <i class="bi bi-heart-pulse"></i>
+                        </div>
+                        <div class="location-info">
+                            <p class="location-name">Downtown Medical Clinic</p>
+                            <p class="location-address">321 Health Ave, Anytown, USA</p>
+                            <p class="location-distance">0.8 miles away</p>
+                        </div>
+                        <div class="location-actions">
+                            <button class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-telephone"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="location-item" data-category="hospital">
+                        <div class="location-icon hospital-icon">
+                            <i class="bi bi-hospital"></i>
+                        </div>
+                        <div class="location-info">
+                            <p class="location-name">Children's Medical Center</p>
+                            <p class="location-address">555 Pediatric Way, Anytown, USA</p>
+                            <p class="location-distance">2.0 miles away</p>
+                        </div>
+                        <div class="location-actions">
+                            <button class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-telephone"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="location-item" data-category="pharmacy">
+                        <div class="location-icon pharmacy-icon">
+                            <i class="bi bi-capsule"></i>
+                        </div>
+                        <div class="location-info">
+                            <p class="location-name">MediMart Pharmacy</p>
+                            <p class="location-address">888 Prescription Rd, Anytown, USA</p>
+                            <p class="location-distance">1.5 miles away</p>
+                        </div>
+                        <div class="location-actions">
+                            <button class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-telephone"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fixed Bottom Navigation -->
+        <nav class="navbar fixed-bottom navbar-expand navbar-dark bg-primary">
+            <div class="container-fluid justify-content-around">
+                <a class="navbar-brand" href="index.html">
+                    <i class="bi bi-house-door"></i>
+                    <span class="d-none d-md-inline">Home</span>
+                </a>
+                <a class="navbar-brand" href="dashboard.html">
+                    <i class="bi bi-graph-up"></i>
+                    <span class="d-none d-md-inline">Dashboard</span>
+                </a>
+                <a class="navbar-brand" href="emergency.html">
+                    <i class="bi bi-exclamation-triangle"></i>
+                    <span class="d-none d-md-inline">Emergency</span>
+                </a>
+                <a class="navbar-brand" href="chat.html">
+                    <i class="bi bi-chat-dots"></i>
+                    <span class="d-none d-md-inline">Chat</span>
+                </a>
+                <a class="navbar-brand active" href="location.html">
+                    <i class="bi bi-geo-alt"></i>
+                    <span class="d-none d-md-inline">Location</span>
+                </a>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Update Location Modal -->
+    <div class="modal fade" id="updateLocationModal" tabindex="-1" aria-labelledby="updateLocationModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateLocationModalLabel">Update Your Location</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="manualAddress" class="form-label">Enter Address</label>
+                        <input type="text" class="form-control" id="manualAddress" placeholder="Enter your address">
+                    </div>
+                    <div class="text-center">
+                        <p class="mb-2">- OR -</p>
+                    </div>
+                    <div class="d-grid">
+                        <button class="btn btn-outline-primary" id="useCurrentLocationBtn">
+                            <i class="bi bi-geo-alt"></i> Use Current Location
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="saveLocationBtn">Update Location</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="js/app.js"></script>
+    <script src="js/location.js"></script>
+</body>
+</html> 

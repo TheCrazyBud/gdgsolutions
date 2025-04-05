@@ -1,0 +1,213 @@
+/* Main Styles for Health App */
+body {
+    padding-bottom: 70px; /* Space for fixed bottom navbar */
+    background-color: #f8f9fa;
+}
+
+.main-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 15px;
+}
+
+/* Section Styles */
+section {
+    margin-bottom: 20px;
+}
+
+/* Card Styles */
+.card {
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border: none;
+}
+
+.card-header {
+    border-top-left-radius: 10px !important;
+    border-top-right-radius: 10px !important;
+}
+
+/* Task Item Styles */
+.task-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    transition: background-color 0.2s;
+}
+
+.task-item:hover {
+    background-color: #f8f9fa;
+}
+
+.task-info {
+    flex-grow: 1;
+    margin-left: 10px;
+}
+
+.task-priority {
+    font-size: 0.8rem;
+    padding: 2px 8px;
+    border-radius: 10px;
+}
+
+.priority-high {
+    background-color: #f8d7da;
+    color: #842029;
+}
+
+.priority-medium {
+    background-color: #fff3cd;
+    color: #664d03;
+}
+
+.priority-low {
+    background-color: #d1e7dd;
+    color: #0f5132;
+}
+
+/* Routine Item Styles */
+.routine-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.routine-item:last-child {
+    border-bottom: none;
+}
+
+.routine-time {
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+/* Memory Aid Styles */
+.memory-item {
+    padding: 10px 15px;
+    border-left: 4px solid #0d6efd;
+    margin-bottom: 10px;
+}
+
+.memory-time {
+    font-size: 0.8rem;
+    color: #6c757d;
+}
+
+/* Doctor Card Styles */
+.doctor-card {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.doctor-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 15px;
+}
+
+.doctor-info {
+    flex-grow: 1;
+}
+
+.doctor-specialty {
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+.doctor-availability {
+    font-size: 0.8rem;
+    padding: 2px 8px;
+    border-radius: 10px;
+    background-color: #d1e7dd;
+    color: #0f5132;
+    display: inline-block;
+}
+
+/* Bottom Navigation Styles */
+.navbar {
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    text-align: center;
+    padding: 8px 0;
+    font-size: 0.9rem;
+    transition: color 0.2s;
+}
+
+.navbar-brand i {
+    font-size: 1.5rem;
+    margin-bottom: 3px;
+}
+
+.navbar-brand.active {
+    color: white;
+    font-weight: bold;
+}
+
+.navbar-brand:hover {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Dark Mode Styles */
+.dark-mode {
+    background-color: #343a40;
+    color: #f8f9fa;
+}
+
+.dark-mode .card {
+    background-color: #495057;
+    color: #f8f9fa;
+}
+
+.dark-mode .card-header {
+    background-color: #6c757d;
+    color: white;
+}
+
+.dark-mode .btn-outline-primary {
+    color: #adb5bd;
+    border-color: #adb5bd;
+}
+
+.dark-mode .btn-outline-primary:hover {
+    background-color: #adb5bd;
+    color: #343a40;
+}
+
+/* Responsive Styles */
+@media (max-width: 767px) {
+    .navbar-brand span {
+        display: none;
+    }
+    
+    .navbar-brand i {
+        font-size: 1.8rem;
+        margin-bottom: 0;
+    }
+}
+
+/* Animation for task completion */
+@keyframes taskComplete {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 0.3; transform: translateX(10px); }
+}
+
+.task-completed {
+    text-decoration: line-through;
+    color: #6c757d;
+    animation: taskComplete 0.5s forwards;
+} 
